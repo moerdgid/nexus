@@ -21,28 +21,6 @@ Nexus is part of **Fulcrum**, my broader self-hosted infrastructure project.
 - npm
 - Git
 
-### Installation
-
-Clone the repository:
-
-```bash
-git clone https://github.com/moerdgid/nexus.git
-cd nexus/frontend
-```
-
-Install dependencies:
-
-```bash
-npm install
-```
-
-Start the development server:
-
-```bash
-npm run dev
-```
-
-Open the local address provided by Vite, typically `http://localhost:5173/`.
 
 ## Planned Features
 
