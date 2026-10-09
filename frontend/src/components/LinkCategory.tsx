@@ -1,5 +1,13 @@
-function LinkCategory({ title }: {title: string}) {
-    return <h2>{title}</h2>
+function LinkCategory(
+    { title, links}:
+    { title: string; links: { title: string; url: string }[] }
+) {
+    return (
+        <div>
+            <h2>{title}</h2>
+            {links.map(link => <p><a href={link.url}>{link.title}</a></p>)}
+        </div>
+    )
 
 }
 export default LinkCategory

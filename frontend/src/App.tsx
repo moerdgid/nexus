@@ -8,6 +8,12 @@ import LinkCategory from './components/LinkCategory.tsx'
 function App() {
   const [count, setCount] = useState(0)
 
+  const developmentLinks = [
+    { title: 'Github', url: 'https://github.com/' },
+    { title: 'Stack Overflow', url: 'https://stackoverflow.com/' }
+  ]
+
+
   return (
     <>
       <section id="center">
@@ -31,10 +37,7 @@ function App() {
         </button>
       </section>
       
-      <LinkCategory title="Development" />
-      <LinkCategory title="Entertainment" />
-      <LinkCategory title="Utilities" />
-
+      <LinkCategory title="Development" links={developmentLinks}/>
 
       <div className="ticks"></div>
 
