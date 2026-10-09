@@ -5,7 +5,7 @@ function LinkCategory(
     return (
         <div>
             <h2>{title}</h2>
-            {links.map(link => <p><a href={link.url}>{link.title}</a></p>)}
+            {links.map(link => <p key={link.url}><a href={link.url}>{link.title}</a></p>)}
         </div>
     )
 
