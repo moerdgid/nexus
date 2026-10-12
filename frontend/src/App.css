@@ -1,6 +1,9 @@
 header {
   border-bottom: 1px solid var(--border);
   padding-bottom: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 main {
@@ -31,4 +34,39 @@ main {
   text-align: center;
   text-decoration: none;
   color: var(--text);
+  transition: color 0.2s ease;
+}
+
+.link-category h2 {
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 25px;
+}
+
+.category-links a:hover {
+  color: var(--accent);
+}
+
+.app {
+  background-color: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  padding: 24px;
+  box-sizing: border-box;
+}
+
+.theme-toggle {
+  background: transparent;
+  border: 0px solid var(--border);
+  color: var(--text-h);
+  padding: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s ease;
+}
+
+.theme-toggle:hover {
+  color: var(--accent);
 }
