@@ -3,7 +3,7 @@ function LinkCategory(
     { title: string; links: { title: string; url: string }[] }
 ) {
     return (
-        <div>
+        <div className="link-category">
             <h2>{title}</h2>
             {links.map(link => <p key={link.url}><a href={link.url}>{link.title}</a></p>)}
         </div>
