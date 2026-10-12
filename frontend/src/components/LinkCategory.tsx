@@ -9,7 +9,7 @@ const icons = {
 
 function LinkCategory(
     { title, links}:
-    { title: string; links: { title: string; url: string; icon: keyof typeof icons }[] }
+    { title: string; links: readonly { title: string; url: string; icon: keyof typeof icons }[] }
 ) {
     return (
         <div className="link-category">

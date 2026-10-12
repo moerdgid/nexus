@@ -34,11 +34,11 @@
 [data-theme="light"] {
   --text: #555A50;
   --text-h: #30352F;
-  --bg: #EAE7DD;
-  --border: #D0D0C5;
+  --bg: #EDE9DC;
+  --border: #B9B9AE;
   --code-bg: #F8F5ED;
-  --accent: #667D68;
-  --accent-bg: #F8F5ED;
+  --accent: #4F6652;
+  --accent-bg: #F7F3E9;
   --accent-border: #667D68;
   --social-bg: #F8F5ED;
   --terracotta: #C47E68;

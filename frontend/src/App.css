@@ -41,6 +41,8 @@ main {
   font-size: 16px;
   font-weight: 500;
   margin-bottom: 25px;
+  color: var(--accent);
+  font-weight: 600;
 }
 
 .category-links a:hover {
