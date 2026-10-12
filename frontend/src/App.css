@@ -5,14 +5,30 @@ header {
 
 main {
   margin-top: 24px;
-  display:grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 20px;
+  display:flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
 .link-category {
   background-color: var(--accent-bg);
-  border: 1px solid car(--border);
+  border: 1px solid var(--border);
   border-radius: 8px;
   padding: 20px;
+}
+
+.category-links {
+  display:grid;
+  grid-template-columns: repeat(auto-fill, 110px);
+  gap: 16px;
+}
+
+.category-links a {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  text-align: center;
+  text-decoration: none;
+  color: var(--text);
 }
