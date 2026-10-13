@@ -7,3 +7,8 @@
     { title: 'Disney+', url: 'https://www.disneyplus.com', icon: 'clapperboard' },
     { title: 'Youtube', url: 'https://www.youtube.com', icon: 'playcircle' }
   ] as const
+
+  export const categories = [
+    { title: 'Development', links: developmentLinks },
+    { title: 'Entertainment', links: entertainmentLinks }
+  ]

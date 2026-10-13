@@ -3,6 +3,7 @@ import LinkCategory from './components/LinkCategory.tsx'
 import { useState } from 'react'
 import { Sun, Moon } from 'lucide-react'
 import { categories } from './data/links'
+import Sidebar from './components/Sidebar'
 
 function App() {
 
@@ -18,15 +19,20 @@ function App() {
         </button>
       </header>
       
-      <main>
-        {categories.map(category => (
-          <LinkCategory
-            key={category.title}
-            title={category.title}
-            links={category.links}
-            />
-        ))}
-      </main>
+      <div className="app-body">
+        <Sidebar />
+      
+        <main>
+          {categories.map(category => (
+            <LinkCategory
+              key={category.title}
+              title={category.title}
+              links={category.links}
+              />
+          ))}
+        </main>
+
+      </div>
 
     </div>
   )

@@ -1,3 +1,21 @@
+
+/* =========================
+   APP LAYOUT
+   ========================= */
+
+.app {
+  background-color: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  padding: 24px;
+  box-sizing: border-box;
+}
+
+.app-body {
+  display: flex;
+  flex: 1;
+}
+
 header {
   border-bottom: 1px solid var(--border);
   padding-bottom: 24px;
@@ -8,10 +26,90 @@ header {
 
 main {
   margin-top: 24px;
-  display:flex;
+  display: flex;
   flex-direction: column;
   gap: 16px;
 }
+
+.app-body main {
+  flex: 1;
+  min-width: 0;
+  padding: 24px;
+  margin-top: 0;
+}
+
+
+/* =========================
+   THEME TOGGLE
+   ========================= */
+
+.theme-toggle {
+  background: transparent;
+  border: none;
+  color: var(--text-h);
+  padding: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s ease;
+}
+
+.theme-toggle:hover {
+  color: var(--accent);
+}
+
+
+/* =========================
+   SIDEBAR NAVIGATION
+   ========================= */
+
+.sidebar {
+  width: 90px;
+  flex-shrink: 0;
+  border-right: 1px solid var(--border);
+  padding: 12px 6px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sidebar button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  padding: 14px 4px;
+
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  color: var(--text);
+
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.sidebar button:hover {
+  background-color: var(--accent-bg);
+  color: var(--terracotta);
+}
+
+.sidebar button.active,
+.sidebar button.active:hover {
+  background-color: var(--terracotta);
+  color: #F7F3E9;
+}
+
+
+/* =========================
+   LINK CATEGORIES
+   ========================= */
 
 .link-category {
   background-color: var(--accent-bg);
@@ -20,8 +118,15 @@ main {
   padding: 20px;
 }
 
+.link-category h2 {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 25px;
+  color: var(--accent);
+}
+
 .category-links {
-  display:grid;
+  display: grid;
   grid-template-columns: repeat(auto-fill, 110px);
   gap: 16px;
 }
@@ -37,38 +142,38 @@ main {
   transition: color 0.2s ease;
 }
 
-.link-category h2 {
-  font-size: 16px;
-  font-weight: 500;
-  margin-bottom: 25px;
-  color: var(--accent);
-  font-weight: 600;
-}
-
 .category-links a:hover {
-  color: var(--accent);
+  color: var(--terracotta);
 }
 
-.app {
-  background-color: var(--bg);
-  color: var(--text);
-  min-height: 100vh;
-  padding: 24px;
-  box-sizing: border-box;
+
+/* =========================
+   LIGHT THEME OVERRIDES
+   ========================= */
+
+[data-theme="light"] .link-category {
+  background-color: #657B68;
+  border-color: #4F6652;
+  color: #F7F3E9;
 }
 
-.theme-toggle {
-  background: transparent;
-  border: 0px solid var(--border);
-  color: var(--text-h);
-  padding: 10px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: color 0.2s ease;
+[data-theme="light"] .link-category h2,
+[data-theme="light"] .category-links a {
+  color: #F7F3E9;
 }
 
-.theme-toggle:hover {
-  color: var(--accent);
+[data-theme="light"] .category-links a:hover {
+  color: var(--terracotta);
+}
+
+[data-theme="light"] .sidebar button:hover {
+  background-color: #DCDDD5;
+  color: var(--terracotta);
+}
+
+/* Keep active navigation terracotta in light mode */
+[data-theme="light"] .sidebar button.active,
+[data-theme="light"] .sidebar button.active:hover {
+  background-color: var(--terracotta);
+  color: #F7F3E9;
 }
