@@ -11,16 +11,22 @@ function App() {
     () => localStorage.getItem('theme') || 'dark'
   )
 
+  const [activePage, setActivePage] = useState('Home')
+
   return (
     <div data-theme={theme} className="app">
       <header>
         <h1>Nexus</h1>
-        <button className="theme-toggle" onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}> {theme === 'dark' ? <Sun size={24} /> : <Moon size={24} />}
+
+        <button 
+          className="theme-toggle" 
+          onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}> {theme === 'dark' ? <Sun size={24} /> : <Moon size={24} />}
         </button>
+
       </header>
       
       <div className="app-body">
-        <Sidebar />
+        <Sidebar activePage={activePage} onPageChange={setActivePage} />
       
         <main>
           {categories.map(category => (
