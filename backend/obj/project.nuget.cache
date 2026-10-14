@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "ngBGd7LrVg0=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\vibetek\\OneDrive\\Desktop\\code\\Fulcrum\\nexus\\backend\\Nexus.Api.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\vibetek\\.nuget\\packages\\microsoft.aspnetcore.openapi\\10.0.12\\microsoft.aspnetcore.openapi.10.0.12.nupkg.sha512",
+    "C:\\Users\\vibetek\\.nuget\\packages\\microsoft.openapi\\2.12.0\\microsoft.openapi.2.12.0.nupkg.sha512"
+  ],
+  "logs": []
+}

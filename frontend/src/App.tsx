@@ -1,6 +1,6 @@
 import './App.css'
 import LinkCategory from './components/LinkCategory.tsx'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Sun, Moon } from 'lucide-react'
 import { categories } from './data/links'
 import Sidebar from './components/Sidebar'
@@ -10,6 +10,18 @@ function App() {
   const [theme, setTheme] = useState(
     () => localStorage.getItem('theme') || 'dark'
   )
+
+  const [apiStatus, setApiStatus] = useState<string>("loading");
+
+  useEffect(() => {
+    fetch("http://localhost:5227/api/status")
+      .then(response => response.json())
+      .then(data => setApiStatus(data.status))
+      .catch(error => {
+        console.error(error);
+        setApiStatus("error");
+      });
+  }, []);
 
   const [activePage, setActivePage] = useState('Home')
 
