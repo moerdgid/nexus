@@ -38,6 +38,18 @@ main {
   margin-top: 0;
 }
 
+.header-logo {
+  display: block;
+  width: 180px;
+  height: auto;
+}
+
+.logo-button {
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
 
 /* =========================
    THEME TOGGLE

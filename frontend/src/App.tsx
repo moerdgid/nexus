@@ -16,8 +16,21 @@ function App() {
   return (
     <div data-theme={theme} className="app">
       <header>
-        <h1>Nexus</h1>
-
+        
+        <button
+          className="logo-button"
+          onClick={() => setActivePage('Home')}
+          aria-label="Go to Home"
+        >
+          <img
+            src={theme === 'dark'
+              ? '/nexus-header-dark.svg'
+              : '/nexus-header-light.svg'}
+            alt="Nexus"
+            className="header-logo"
+          />
+        </button>
+        
         <button 
           className="theme-toggle" 
           onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}> {theme === 'dark' ? <Sun size={24} /> : <Moon size={24} />}
