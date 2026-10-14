@@ -1,5 +1,5 @@
   export const developmentLinks = [
-    { title: 'Github', url: 'https://github.com/', icon: 'code' },
+    { title: 'Github', url: 'https://github.com/moerdgid/', icon: 'code' },
     { title: 'Stack Overflow', url: 'https://stackoverflow.com/', icon: 'layers' }
   ] as const
 

@@ -1,7 +1,7 @@
 :root {
 /* Dark theme — default */
---text: #D5D2C9;
---text-h: #F0EDE3;
+--text: #EDE9DC;
+--text-h: #EDE9DC;
 --bg: #242722;
 --border: #4C544A;
 --code-bg: #343A33;
