@@ -10,10 +10,11 @@
 using System;
 using System.Reflection;
 
+[assembly: Microsoft.Extensions.Configuration.UserSecrets.UserSecretsIdAttribute("037de74e-8707-4d21-9608-ddc336b8f697")]
 [assembly: System.Reflection.AssemblyCompanyAttribute("Nexus.Api")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+79bc5098940abab3774b6ba318259bf6f901e950")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+af70d1a40ac2cb724987d1eff6a371821fa85dbb")]
 [assembly: System.Reflection.AssemblyProductAttribute("Nexus.Api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Nexus.Api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
