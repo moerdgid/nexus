@@ -189,3 +189,159 @@ main {
   background-color: var(--terracotta);
   color: #F7F3E9;
 }
+
+
+/* =========================
+   LOGIN SCREEN
+   ========================= */
+
+.login-page {
+  min-height: calc(100vh - 48px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-form {
+  width: 100%;
+  max-width: 380px;
+  padding: 36px;
+  box-sizing: border-box;
+
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  background-color: var(--accent-bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+.login-form h1 {
+  color: var(--text-h);
+  font-size: 24px;
+  font-weight: 600;
+  margin: 0 0 16px;
+  text-align: center;
+}
+
+.login-form label {
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.login-form input {
+  width: 100%;
+  padding: 12px;
+  box-sizing: border-box;
+
+  background-color: var(--bg);
+  color: var(--text-h);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+
+  font: inherit;
+  font-size: 15px;
+}
+
+.login-form input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.login-form button {
+  margin-top: 12px;
+  padding: 12px;
+
+  background-color: var(--terracotta);
+  color: #F7F3E9;
+  border: none;
+  border-radius: 6px;
+
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.login-form button:hover {
+  opacity: 0.85;
+}
+
+.login-form button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.login-form p[role="alert"] {
+  color: var(--terracotta);
+  font-size: 14px;
+  margin: 0;
+}
+
+/* =========================
+   USER PROFILE
+   ========================= */
+
+.user-profile {
+  margin-left: auto;
+  padding: 0 16px;
+  color: var(--text);
+  font-size: 14px;
+}
+
+.logout-button {
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 8px 12px;
+
+  color: var(--text);
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.logout-button:hover {
+  border-color: var(--terracotta);
+  color: var(--terracotta);
+}
+
+.login-logo {
+  width: 200px;
+  max-width: 100%;
+  height: auto;
+  align-self: center;
+  margin-bottom: 12px;
+}
+
+/* =========================
+   LOGIN — LIGHT THEME
+   ========================= */
+
+[data-theme="light"] .login-form {
+  background-color: #DDDCCF;
+  border-color: #B8B9AA;
+}
+
+[data-theme="light"] .login-form input {
+  background-color: #EEEBDD;
+  border-color: #B8B9AA;
+  color: #30382F;
+}
+
+[data-theme="light"] .login-form input:focus {
+  border-color: #657B68;
+}
+
+[data-theme="light"] .login-form button {
+  background-color: #657B68;
+  color: #F7F3E9;
+}
+
+[data-theme="light"] .login-form button:hover {
+  background-color: #536956;
+  opacity: 1;
+}

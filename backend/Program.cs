@@ -22,9 +22,22 @@ builder.Services.AddCors(options =>
     options.AddPolicy("NexusFrontend", policy =>
     {
         policy.WithOrigins("http://localhost:5173")
-              .AllowAnyHeader()
-              .AllowAnyMethod();
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials();
     });
+});
+
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.Cookie.HttpOnly = true;
+    options.Cookie.SameSite = SameSiteMode.Lax;
+    options.LoginPath = "/api/auth/login";
+    options.Events.OnRedirectToLogin = context =>
+    {
+        context.Response.StatusCode = 401;
+        return Task.CompletedTask;
+    };
 });
 
 var app = builder.Build();
@@ -54,113 +67,51 @@ app.MapGet("/api/status", () =>
 .RequireAuthorization();
 
 
-
-
-
-if (app.Environment.IsDevelopment())
+app.MapPost("/api/auth/login", async (
+    LoginRequest request,
+    SignInManager<ApplicationUser> signInManager) =>
 {
-    app.MapPost("/api/setup/admin", async (
-        UserManager<ApplicationUser> userManager,
-        RoleManager<IdentityRole> roleManager,
-        IConfiguration configuration,
-        AdminSetupRequest request) =>
-    {
-        var setupKey = configuration["AdminSetupKey"];
+    var result = await signInManager.PasswordSignInAsync(
+        request.Email,
+        request.Password,
+        isPersistent: request.RememberMe,
+        lockoutOnFailure: true);
 
-        if (string.IsNullOrEmpty(setupKey) ||
-            request.SetupKey != setupKey)
-            return Results.Unauthorized();
+    return result.Succeeded
+        ? Results.Ok(new { Message = "Signed in" })
+        : Results.Unauthorized();
+});
 
-        var existingUser = await userManager.FindByEmailAsync(request.Email);
-
-        if (userManager.Users.Any() && existingUser == null)
-            return Results.Conflict("Another account already exists.");
-
-        if (existingUser != null)
-            return Results.Conflict("Initial account already created.");
-
-        var user = new ApplicationUser
-        {
-            UserName = request.Email,
-            Email = request.Email,
-            DisplayName = request.DisplayName
-        };
-
-        var result = await userManager.CreateAsync(user, request.Password);
-
-        if (!result.Succeeded)
-            return Results.BadRequest(result.Errors);
-
-        if (!await roleManager.RoleExistsAsync("Administrator"))
-        {
-            var roleResult = await roleManager.CreateAsync(
-                new IdentityRole("Administrator"));
-
-            if (!roleResult.Succeeded)
-                return Results.BadRequest(roleResult.Errors);
-        }
-
-        var assignmentResult = await userManager.AddToRoleAsync(
-            user, "Administrator");
-
-        if (!assignmentResult.Succeeded)
-            return Results.BadRequest(assignmentResult.Errors);
-
-        return Results.Ok("Initial administrator account created.");
-    });
-}
-
-
-
-if (app.Environment.IsDevelopment())
+app.MapPost("/api/auth/logout", async (
+    SignInManager<ApplicationUser> signInManager) =>
 {
-    app.MapPost("/api/setup/repair-admin", async (
-        UserManager<ApplicationUser> userManager,
-        RoleManager<IdentityRole> roleManager,
-        IConfiguration configuration,
-        AdminSetupRequest request) =>
+    await signInManager.SignOutAsync();
+    return Results.Ok();
+}).RequireAuthorization();
+
+app.MapGet("/api/auth/me", async (
+    System.Security.Claims.ClaimsPrincipal principal,
+    UserManager<ApplicationUser> userManager) =>
+{
+    var user = await userManager.GetUserAsync(principal);
+
+    if (user == null)
+        return Results.Unauthorized();
+
+    return Results.Ok(new
     {
-        if (string.IsNullOrEmpty(configuration["AdminSetupKey"]) ||
-            request.SetupKey != configuration["AdminSetupKey"])
-            return Results.Unauthorized();
-
-        var users = await userManager.Users.Take(2).ToListAsync();
-
-        if (users.Count != 1 ||
-            !string.Equals(users[0].Email, request.Email,
-                StringComparison.OrdinalIgnoreCase))
-            return Results.Conflict("Account verification failed.");
-
-        var user = users[0];
-
-        if (!await userManager.CheckPasswordAsync(user, request.Password))
-            return Results.Unauthorized();
-
-        if (!await roleManager.RoleExistsAsync("Administrator"))
-        {
-            var result = await roleManager.CreateAsync(
-                new IdentityRole("Administrator"));
-
-            if (!result.Succeeded)
-                return Results.BadRequest(result.Errors);
-        }
-
-        var assignment = await userManager.AddToRoleAsync(
-            user, "Administrator");
-
-        return assignment.Succeeded
-            ? Results.Ok("Administrator role assigned.")
-            : Results.BadRequest(assignment.Errors);
+        user.Id,
+        user.Email,
+        user.DisplayName,
+        IsAdministrator = await userManager.IsInRoleAsync(
+            user, "Administrator")
     });
-}
+}).RequireAuthorization();
 
 
 app.Run();
 
-
-
-public record AdminSetupRequest(
+public record LoginRequest(
     string Email,
     string Password,
-    string DisplayName,
-    string SetupKey);
+    bool RememberMe);
