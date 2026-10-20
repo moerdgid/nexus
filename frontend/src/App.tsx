@@ -34,7 +34,7 @@ function App() {
 
   // Functions
   async function refreshUser() {
-    const response = await fetch('http://localhost:5227/api/auth/me', {
+    const response = await fetch('/api/auth/me', {
       credentials: 'include'
     })
 
@@ -48,7 +48,7 @@ function App() {
   }
 
   async function logout() {
-    const response = await fetch('http://localhost:5227/api/auth/logout', {
+    const response = await fetch('/api/auth/logout', {
       method: 'POST',
       credentials: 'include'
     })

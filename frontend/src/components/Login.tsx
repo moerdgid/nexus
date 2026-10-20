@@ -17,7 +17,7 @@ export default function Login({ onLogin, theme }: LoginProps) {
     setLoading(true)
 
     try {
-      const response = await fetch('http://localhost:5227/api/auth/login', {
+      const response = await fetch('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
