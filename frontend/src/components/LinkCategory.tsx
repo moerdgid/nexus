@@ -22,7 +22,7 @@ function LinkCategory(
 
                     return (
                         <p key={link.url}>
-                            <a href={link.url}>
+                            <a href={link.url} target="_blank" rel="noopener noreferrer">
                                 <Icon size={32} />
                                 {link.title}
                             </a>

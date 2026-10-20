@@ -8,7 +8,13 @@
     { title: 'Youtube', url: 'https://www.youtube.com', icon: 'playcircle' }
   ] as const
 
+  export const workLinks = [
+  
+
+   ] as const
+
   export const categories = [
     { title: 'Development', links: developmentLinks },
-    { title: 'Entertainment', links: entertainmentLinks }
+    { title: 'Entertainment', links: entertainmentLinks },
+    { title: 'Work', links: workLinks}
   ]

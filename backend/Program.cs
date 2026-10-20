@@ -197,8 +197,170 @@ app.MapGet("/api/auth/me", async (
 
 
 // --------------------------------------------------
+// Personalized Bookmarks
+// --------------------------------------------------
+
+// Get the signed-in user's categories and bookmarks
+app.MapGet("/api/links", async (
+    System.Security.Claims.ClaimsPrincipal principal,
+    UserManager<ApplicationUser> userManager,
+    ApplicationDbContext db) =>
+{
+    var user = await userManager.GetUserAsync(principal);
+
+    if (user == null)
+    {
+        return Results.Unauthorized();
+    }
+
+    var categories = await db.LinkCategories
+        .AsNoTracking()
+        .Where(category => category.UserId == user.Id)
+        .OrderBy(category => category.DisplayOrder)
+        .Select(category => new
+        {
+            category.Id,
+            category.Name,
+            category.DisplayOrder,
+            Links = category.Links
+                .OrderBy(link => link.DisplayOrder)
+                .Select(link => new
+                {
+                    link.Id,
+                    link.Title,
+                    link.Url,
+                    link.Icon,
+                    link.DisplayOrder
+                })
+                .ToList()
+        })
+        .ToListAsync();
+
+    return Results.Ok(categories);
+})
+.RequireAuthorization();
+
+
+app.MapPost("/api/categories", async (
+    CreateCategoryRequest request,
+    System.Security.Claims.ClaimsPrincipal principal,
+    UserManager<ApplicationUser> userManager,
+    ApplicationDbContext db) =>
+{
+    var user = await userManager.GetUserAsync(principal);
+
+    if (user == null)
+        return Results.Unauthorized();
+
+    var name = request.Name?.Trim();
+
+    if (string.IsNullOrWhiteSpace(name) || name.Length > 100)
+        return Results.BadRequest("Category name must be 1–100 characters.");
+
+    var nextOrder = await db.LinkCategories
+        .Where(category => category.UserId == user.Id)
+        .Select(category => (int?)category.DisplayOrder)
+        .MaxAsync() ?? -1;
+
+    var category = new LinkCategory
+    {
+        Name = name,
+        UserId = user.Id,
+        DisplayOrder = nextOrder + 1
+    };
+
+    db.LinkCategories.Add(category);
+    await db.SaveChangesAsync();
+
+    return Results.Created($"/api/categories/{category.Id}", new
+    {
+        category.Id,
+        category.Name,
+        category.DisplayOrder
+    });
+})
+.RequireAuthorization();
+
+
+ // Create Bookmark
+app.MapPost("/api/links", async (
+    CreateBookmarkRequest request,
+    System.Security.Claims.ClaimsPrincipal principal,
+    UserManager<ApplicationUser> userManager,
+    ApplicationDbContext db) =>
+{
+    var user = await userManager.GetUserAsync(principal);
+
+    if (user == null)
+        return Results.Unauthorized();
+
+    // Confirm the category belongs to this user
+    var category = await db.LinkCategories
+        .FirstOrDefaultAsync(c =>
+            c.Id == request.CategoryId &&
+            c.UserId == user.Id);
+
+    if (category == null)
+        return Results.NotFound();
+
+    var title = request.Title?.Trim();
+    var url = request.Url?.Trim();
+
+    if (string.IsNullOrWhiteSpace(title) || title.Length > 100)
+        return Results.BadRequest("Title must be 1–100 characters.");
+
+    if (string.IsNullOrWhiteSpace(url) ||
+        url.Length > 2048 ||
+        !Uri.TryCreate(url, UriKind.Absolute, out var parsedUrl) ||
+        (parsedUrl.Scheme != Uri.UriSchemeHttp &&
+         parsedUrl.Scheme != Uri.UriSchemeHttps))
+        return Results.BadRequest("Enter a valid HTTP or HTTPS URL.");
+
+    var nextOrder = await db.BookmarkLinks
+        .Where(link => link.LinkCategoryId == category.Id)
+        .Select(link => (int?)link.DisplayOrder)
+        .MaxAsync() ?? -1;
+
+    var link = new BookmarkLink
+    {
+        Title = title,
+        Url = url,
+        Icon = "link",
+        LinkCategoryId = category.Id,
+        DisplayOrder = nextOrder + 1
+    };
+
+    db.BookmarkLinks.Add(link);
+    await db.SaveChangesAsync();
+
+    return Results.Created($"/api/links/{link.Id}", new
+    {
+        link.Id,
+        link.Title,
+        link.Url,
+        link.Icon,
+        link.DisplayOrder,
+        link.LinkCategoryId
+    });
+})
+.RequireAuthorization();
+
+
+// --------------------------------------------------
 // Start Application
 // --------------------------------------------------
+
+
+if (app.Environment.IsDevelopment())
+{
+    using var scope = app.Services.CreateScope();
+
+    var userManager = scope.ServiceProvider
+        .GetRequiredService<UserManager<ApplicationUser>>();
+
+    await DevelopmentSeeder.SeedAsync(userManager);
+}
+
 
 app.Run();
 
@@ -211,3 +373,12 @@ public record LoginRequest(
     string Email,
     string Password,
     bool RememberMe);
+
+
+public record CreateCategoryRequest(string? Name);
+
+
+public record CreateBookmarkRequest(
+    int CategoryId,
+    string? Title,
+    string? Url);

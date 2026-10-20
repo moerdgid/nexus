@@ -1,3 +1,4 @@
+
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Nexus.Api.Models;
@@ -10,4 +11,8 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
         : base(options)
     {
     }
+
+    public DbSet<LinkCategory> LinkCategories { get; set; }
+
+    public DbSet<BookmarkLink> BookmarkLinks { get; set; }
 }
