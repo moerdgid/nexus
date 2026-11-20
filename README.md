@@ -1,34 +1,92 @@
 # Nexus
 
-A personal dashboard hosted on **one Cloudflare Worker**. React/Vite is in `frontend/`; Hono, Better Auth, Drizzle and D1 are in `worker/`. One Git repository, one Cloudflare deployment, one domain. The previous ASP.NET Core backend is no longer included.
+Nexus is a personal dashboard for organizing bookmarks, projects, and frequently used services in one place.
 
-## Local setup (PowerShell, repository root)
+It's part of my larger Fulcrum environment, which I'm building to experiment with web development, cloud infrastructure, and different technologies as I learn.
 
-1. `npm install`
-2. `npm run setup`
-3. Copy `.dev.vars.example` to `.dev.vars`, replace the secret, URL and admin email. Generate a secret with `[Convert]::ToHexString([System.Security.Cryptography.RandomNumberGenerator]::GetBytes(32))`.
-4. `npm run db:local`
-5. `npm run dev`
-6. Open http://localhost:5173 (Vite forwards `/api` to the Worker on port 8787).
+The goal is to keep Nexus simple, customizable, and useful as an everyday homepage.
 
-For a local test account, set `ALLOW_SIGNUP="true"` in `.dev.vars`, then use PowerShell:
+## Features
 
-```powershell
-$body = @{ name = 'Gideon'; email = 'you@example.com'; password = 'a-long-unique-password' } | ConvertTo-Json
-Invoke-RestMethod -Uri 'http://localhost:5173/api/auth/sign-up/email' -Method Post -ContentType 'application/json' -Body $body
+- Personal dashboard with light and dark themes
+- Custom bookmark categories and links
+- User accounts with private bookmarks
+- Persistent storage using Cloudflare D1
+- Responsive interface for desktop and mobile
+
+## Tech Stack
+
+| | Technology |
+|---|---|
+| Frontend | React, TypeScript, Vite |
+| Backend | TypeScript, Hono |
+| Authentication | Better Auth |
+| Database | Cloudflare D1, Drizzle ORM |
+| Hosting | Cloudflare Workers |
+| Version Control | GitHub |
+
+## Project Structure
+
+```text
+nexus/
+├── frontend/       # React application
+├── worker/         # API, authentication, and database
+├── wrangler.jsonc  # Cloudflare configuration
+└── package.json    # Development scripts
 ```
 
-Sign in using the Nexus UI. After creating initial accounts, set `ALLOW_SIGNUP="false"` and restart `npm run dev`. The old `dev@nexus.local` D1 row is not a login account.
+## Local Development
 
-## Verify and deploy
+Clone the repository and install dependencies:
 
-- `npm run typecheck` checks Worker types and builds React.
-- `npm run build` creates `frontend/dist` for the Worker to serve.
-- `npm run db:remote` applies migrations to remote D1. **Review migrations first**.
-- Set production secrets with `npx wrangler secret put BETTER_AUTH_SECRET`.
-- Set production `BETTER_AUTH_URL` to `https://nexus.moerdyk.dev` and keep `ALLOW_SIGNUP` disabled using Worker environment variables in `wrangler.jsonc` (do not put secrets there).
-- `npm run deploy` builds and deploys a **single Worker with static assets**. Connect `nexus.moerdyk.dev` to that Worker in Cloudflare when ready.
+```bash
+git clone https://github.com/moerdgid/nexus.git
+cd nexus
 
-The existing D1 database ID is retained from the supplied archive. `wrangler.jsonc` lives at the repository root, so Wrangler's local D1 state may start fresh; applying the migrations recreates local tables. Local data from an older `worker/.wrangler/` directory is not automatically carried over.
+npm install
+npm install --prefix frontend
+npm install --prefix worker
+```
 
-**Not verified:** Dependency installation, builds, browser login and deployment must be tested on your machine. Keep the original ZIP as a backup. This does not change any live Cloudflare DNS, Google Cloud VM, or wedding website.
+Create a `.dev.vars` file in the project root with the local authentication settings:
+
+```dotenv
+BETTER_AUTH_SECRET="your-secret"
+BETTER_AUTH_URL="http://localhost:5173"
+ALLOW_SIGNUP="false"
+ADMIN_EMAIL="your-email@example.com"
+```
+
+The local database also needs its migrations applied:
+
+```bash
+npx wrangler d1 migrations apply nexus-db --local
+```
+
+Start the development servers:
+
+```bash
+npm run dev
+```
+
+The frontend runs at `http://localhost:5173`, with the API running through Wrangler on port `8787`.
+
+## Deployment
+
+Nexus is hosted on Cloudflare Workers at **https://nexus.moerdyk.dev**.
+
+The GitHub repository is connected to Cloudflare. Pushing changes to `main` automatically triggers a new build and deployment.
+
+```bash
+git add .
+git commit -m "Update Nexus"
+git push
+```
+
+Production environment variables and authentication secrets are managed through Cloudflare.
+
+## Fulcrum
+
+Fulcrum is my broader personal development environment. Nexus is one of the applications within it, serving as a central place to access the tools and services I use.
+
+The project is ongoing, with new features and improvements added as needed.
