@@ -7,7 +7,7 @@ const icons = { code: Code2, layers: Layers, clapperboard: Clapperboard,
 
 export default function LinkCategory({ title, links, index }: { title: string; links: Bookmark[]; index: number }) {
   return <section className="link-category">
-    <div className="category-header"><span className="category-number">{String(index).padStart(2, '0')} / DIRECTORY</span><span className="category-count">{String(links.length).padStart(2, '0')} ENTRIES</span></div>
+    <div className="category-header"><span className="category-number">{title === '' ? 'Bookmarks' : 'COLLECTION'}</span><span className="category-count">{links.length} {links.length === 1 ? 'link' : 'links'}</span></div>
     <h2>{title}</h2>
     <div className="category-links">{links.length ? links.map(link => {
       const Icon = icons[link.icon.toLowerCase() as keyof typeof icons] || LinkIcon

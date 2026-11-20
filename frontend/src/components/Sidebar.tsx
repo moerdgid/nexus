@@ -1,16 +1,16 @@
-import { House, ListTodo, Plug, Server, ArrowUpRight } from 'lucide-react'
+import { House, ListTodo, Plug, Server } from 'lucide-react'
 
 const pages = [
-  { name: 'Home', icon: House, number: '01' },
-  { name: 'Projects', icon: ListTodo, number: '02' },
-  { name: 'Services', icon: Plug, number: '03' },
-  { name: 'Fulcrum', icon: Server, number: '04' },
+  { name: 'Home', icon: House },
+  { name: 'Projects', icon: ListTodo },
+  { name: 'Services', icon: Plug },
+  { name: 'Fulcrum', icon: Server },
 ]
 
 export default function Sidebar({ activePage, onPageChange }: { activePage: string; onPageChange: (page: string) => void }) {
   return <nav className="sidebar" aria-label="Main navigation">
-    <div className="sidebar-heading">DIRECTORY <span> / 04</span></div>
-    <div className="sidebar-links">{pages.map(({ name, icon: Icon, number }) => <button key={name} className={activePage === name ? 'active' : ''} onClick={() => onPageChange(name)} aria-current={activePage === name ? 'page' : undefined}><span className="nav-number">{number}</span><Icon size={17} strokeWidth={1.7} /><span className="nav-label">{name}</span>{activePage === name && <span className="nav-indicator" />}</button>)}</div>
-    <div className="sidebar-bottom"><span className="sidebar-bottom-icon">✳</span><span>THE FULCRUM<br />ENVIRONMENT</span><ArrowUpRight size={13} /></div>
+    <div className="sidebar-heading">Explore</div>
+    <div className="sidebar-links">{pages.map(({ name, icon: Icon }) => <button key={name} className={activePage === name ? 'active' : ''} onClick={() => onPageChange(name)} aria-current={activePage === name ? 'page' : undefined}><Icon size={17} strokeWidth={1.7} /><span className="nav-label">{name}</span></button>)}</div>
+    <div className="sidebar-bottom">Nexus <span> / Fulcrum</span></div>
   </nav>
 }
