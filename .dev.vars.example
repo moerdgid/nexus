@@ -1,0 +1,5 @@
+# Copy to .dev.vars at the repository root. Never commit the real file.
+BETTER_AUTH_SECRET="REPLACE_WITH_A_RANDOM_SECRET_AT_LEAST_32_CHARACTERS"
+BETTER_AUTH_URL="http://localhost:5173"
+ALLOW_SIGNUP="true"
+ADMIN_EMAIL="you@example.com"

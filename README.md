@@ -1,86 +1,34 @@
 # Nexus
 
-Nexus is a personal web dashboard for organizing frequently used websites, applications, and services in one place.
+A personal dashboard hosted on **one Cloudflare Worker**. React/Vite is in `frontend/`; Hono, Better Auth, Drizzle and D1 are in `worker/`. One Git repository, one Cloudflare deployment, one domain. The previous ASP.NET Core backend is no longer included.
 
-The goal is to build a customizable homepage with useful widgets, service integrations, and tools for managing personal projects and infrastructure.
+## Local setup (PowerShell, repository root)
 
-Nexus is part of **Fulcrum**, my broader self-hosted infrastructure project.
+1. `npm install`
+2. `npm run setup`
+3. Copy `.dev.vars.example` to `.dev.vars`, replace the secret, URL and admin email. Generate a secret with `[Convert]::ToHexString([System.Security.Cryptography.RandomNumberGenerator]::GetBytes(32))`.
+4. `npm run db:local`
+5. `npm run dev`
+6. Open http://localhost:5173 (Vite forwards `/api` to the Worker on port 8787).
 
-## Technology Stack
+For a local test account, set `ALLOW_SIGNUP="true"` in `.dev.vars`, then use PowerShell:
 
-- **Frontend:** React, TypeScript, Vite
-- **Styling:** CSS
-- **Icons:** Lucide React
-- **Backend (planned):** C#, ASP.NET Core
-- **Hosting (planned):** Oracle Cloud, Ubuntu Linux
-- **Version Control:** Git, GitHub
+```powershell
+$body = @{ name = 'Gideon'; email = 'you@example.com'; password = 'a-long-unique-password' } | ConvertTo-Json
+Invoke-RestMethod -Uri 'http://localhost:5173/api/auth/sign-up/email' -Method Post -ContentType 'application/json' -Body $body
+```
 
-## Getting Started
+Sign in using the Nexus UI. After creating initial accounts, set `ALLOW_SIGNUP="false"` and restart `npm run dev`. The old `dev@nexus.local` D1 row is not a login account.
 
-### Prerequisites
+## Verify and deploy
 
-- Node.js
-- npm
-- Git
+- `npm run typecheck` checks Worker types and builds React.
+- `npm run build` creates `frontend/dist` for the Worker to serve.
+- `npm run db:remote` applies migrations to remote D1. **Review migrations first**.
+- Set production secrets with `npx wrangler secret put BETTER_AUTH_SECRET`.
+- Set production `BETTER_AUTH_URL` to `https://nexus.moerdyk.dev` and keep `ALLOW_SIGNUP` disabled using Worker environment variables in `wrangler.jsonc` (do not put secrets there).
+- `npm run deploy` builds and deploys a **single Worker with static assets**. Connect `nexus.moerdyk.dev` to that Worker in Cloudflare when ready.
 
-### Local Development
+The existing D1 database ID is retained from the supplied archive. `wrangler.jsonc` lives at the repository root, so Wrangler's local D1 state may start fresh; applying the migrations recreates local tables. Local data from an older `worker/.wrangler/` directory is not automatically carried over.
 
-Clone the repository:
-
-`git clone https://github.com/moerdgid/nexus.git`
-
-Navigate to the frontend directory:
-
-`cd nexus/frontend`
-
-Install dependencies:
-
-`npm install`
-
-Start the development server:
-
-`npm run dev`
-
-Open the local address provided in the terminal.
-
-## Current Features
-
-- React frontend with reusable TypeScript components
-- Categorized website links with Lucide icons
-- Vertical navigation sidebar with active-page highlighting
-- Shared navigation state managed through React
-- Custom light and dark themes
-- CSS variables for consistent styling
-- Roboto typography
-
-## Planned Features
-
-- Functional navigation between dashboard sections
-- Customizable homepage with interactive widgets
-- Project and task management
-- Search functionality
-- Weather and calendar information
-- Discord integration and voice channel activity
-- Minecraft server status, player activity, and BlueMap integration
-- Integration with other personal applications and services
-- Fulcrum server monitoring and management
-- Backend API with persistent data storage
-- Authentication and secure remote access
-
-## Development Status
-
-**Early Development**
-
-The initial React frontend is configured, and the basic dashboard layout is in place.
-
-The application currently includes categorized website links, a navigation sidebar, and a custom theme system. Sidebar selection is functional, but individual pages have not yet been implemented.
-
-Current development is focused on connecting navigation to the main workspace, building the initial dashboard components, and establishing the structure for future features.
-
-Backend development and deployment will follow once the frontend is further along.
-
-## Fulcrum
-
-Fulcrum is my self-hosted infrastructure environment, intended to host Nexus and other personal services.
-
-Nexus will provide a web interface for accessing those services, viewing information, and eventually monitoring and managing my Fulcrum environment.
+**Not verified:** Dependency installation, builds, browser login and deployment must be tested on your machine. Keep the original ZIP as a backup. This does not change any live Cloudflare DNS, Google Cloud VM, or wedding website.

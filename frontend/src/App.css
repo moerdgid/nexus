@@ -345,3 +345,16 @@ main {
   background-color: #536956;
   opacity: 1;
 }
+
+/* Bookmark management: inherits Nexus theme variables */
+.bookmark-toolbar { display: flex; justify-content: flex-end; }
+.bookmark-manager { max-width: 850px; width: 100%; }
+.bookmark-manager form { display: flex; flex-wrap: wrap; gap: 12px; align-items: end; padding: 16px 0; border-bottom: 1px solid var(--border); }
+.bookmark-manager label { display: flex; flex-direction: column; gap: 6px; flex: 1; min-width: 170px; }
+.bookmark-manager input, .bookmark-manager select { font: inherit; padding: 9px; border-radius: 6px; border: 1px solid var(--border); background: var(--bg); color: var(--text); }
+.bookmark-manager button, .bookmark-toolbar button { font: inherit; padding: 8px 12px; border: 1px solid var(--border); border-radius: 6px; background: var(--accent-bg); color: var(--text-h); cursor: pointer; }
+.bookmark-manager button:disabled { opacity: .5; cursor: wait; }
+.manager-category { border-bottom: 1px solid var(--border); padding: 14px 0; }
+.manager-heading, .manager-link { display: flex; align-items: center; gap: 12px; margin: 8px 0; }
+.manager-heading strong, .manager-link span { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+.bookmark-manager [role="alert"] { color: var(--terracotta); }
