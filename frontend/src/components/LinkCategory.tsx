@@ -1,8 +1,8 @@
-import { Code2, Layers, Clapperboard, PlayCircle, Github, Link as LinkIcon, Globe, Music, Folder } from 'lucide-react'
+import { Code2, Layers, Clapperboard, PlayCircle, GitBranch, Link as LinkIcon, Globe, Music, Folder } from 'lucide-react'
 import type { Bookmark } from '../types/bookmarks'
 
 const icons = { code: Code2, layers: Layers, clapperboard: Clapperboard,
-  playcircle: PlayCircle, github: Github, link: LinkIcon, globe: Globe,
+  playcircle: PlayCircle, github: GitBranch, link: LinkIcon, globe: Globe,
   music: Music, folder: Folder }
 
 export default function LinkCategory({ title, links }: { title: string; links: Bookmark[] }) {

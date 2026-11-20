@@ -6,6 +6,13 @@
   "compatibility_flags": [
     "nodejs_compat"
   ],
+
+"vars": {
+  "BETTER_AUTH_URL": "https://nexus.moerdyk.dev",
+  "ALLOW_SIGNUP": "false",
+  "ADMIN_EMAIL": "gideonmoerdyk@gmail.com"
+},
+
   "assets": {
     "directory": "./frontend/dist",
     "binding": "ASSETS",
