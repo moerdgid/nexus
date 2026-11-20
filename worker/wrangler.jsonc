@@ -1,0 +1,14 @@
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "nexus-dev",
+	"main": "src/index.ts",
+	"compatibility_date": "2026-11-20",
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "nexus-db",
+			"database_id": "c6137b3e-1b97-466c-91b1-7e7244f79d08",
+            "migrations_dir": "drizzle"
+		}
+	]
+}
